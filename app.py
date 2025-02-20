@@ -22,7 +22,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Custom CSS for styling the app with dark mode aesthetics
-# This enhances the UI by setting background colors, button styles, and text formatting
 st.markdown(
     """
     <style>
@@ -92,7 +91,7 @@ st.markdown(
         }
     </style>
     """,
-    unsafe_allow_html=True  # 'unsafe_allow_html' permits raw HTML/CSS embedding in the Streamlit app
+    unsafe_allow_html=True
 )
 
 # Display the main app title and introductory text
@@ -100,7 +99,6 @@ st.title("Advanced Data Sweeper")  # Large, eye-catching title
 st.markdown("<p style='text-align: center;'>Transform your files between CSV and Excel formats with built-in data cleaning and visualization.</p>", unsafe_allow_html=True)  # Centered subtitle
 
 # File uploader widget that accepts CSV and Excel files
-# 'accept_multiple_files=True' allows batch uploading multiple files at once
 uploaded_files = st.file_uploader("Upload your files (CSV or Excel):", type=["csv", "xlsx"], accept_multiple_files=True)
 
 # Processing logic for uploaded files (if any files are uploaded)
@@ -111,9 +109,9 @@ if uploaded_files:
         
         # Read the uploaded file into a pandas DataFrame based on its extension
         if file_extension == ".csv":
-            df = pd.read_csv(file)  # Read CSV files
+            df = pd.read_csv(file)
         elif file_extension == ".xlsx":
-            df = pd.read_excel(file)  # Read Excel files
+            df = pd.read_excel(file)  
         else:
             # Show an error message if the file type is unsupported
             st.error(f"Unsupported file type: {file_extension}")
@@ -121,16 +119,16 @@ if uploaded_files:
         
         # Display uploaded file information (name and size)
         st.write(f"**📄 File Name:** {file.name}")
-        st.write(f"**📏 File Size:** {file.size / 1024:.2f} KB")  # File size in KB
+        st.write(f"**📏 File Size:** {file.size / 1024:.2f} KB")
 
         # Preview the first 5 rows of the uploaded file
         st.write("🔍 Preview of the Uploaded File:")
-        st.dataframe(df.head())  # Display a scrollable preview of the data
+        st.dataframe(df.head())
         
         # Section for data cleaning options
         st.subheader("🛠️ Data Cleaning Options")
         if st.checkbox(f"Clean Data for {file.name}"):
-            col1, col2 = st.columns(2)  # Split cleaning options into two columns
+            col1, col2 = st.columns(2)
             with col1:
                 # Button to remove duplicate rows from the DataFrame
                 if st.button(f"Remove Duplicates from {file.name}"):
@@ -146,7 +144,7 @@ if uploaded_files:
         # Section to choose specific columns to convert
         st.subheader("🎯 Select Columns to Convert")
         columns = st.multiselect(f"Choose Columns for {file.name}", df.columns, default=df.columns)
-        df = df[columns]  # Filters the DataFrame to the selected columns
+        df = df[columns] 
         
         # Visualization section for uploaded data
         st.subheader("📊 Data Visualization")
@@ -170,13 +168,13 @@ if uploaded_files:
         st.subheader("🔄 Conversion Options")
         conversion_type = st.radio(f"Convert {file.name} to:", ["CSV", "Excel"], key=file.name)
         if st.button(f"Convert {file.name}"):
-            buffer = BytesIO()  # Creates in-memory buffer for file output
+            buffer = BytesIO()
             if conversion_type == "CSV":
-                df.to_csv(buffer, index=False)  # Save DataFrame as CSV in buffer
+                df.to_csv(buffer, index=False)
                 file_name = file.name.replace(file_extension, ".csv")
                 mime_type = "text/csv"
             elif conversion_type == "Excel":
-                df.to_excel(buffer, index=False, engine='openpyxl')  # Save as Excel using openpyxl
+                df.to_excel(buffer, index=False, engine='openpyxl')
                 file_name = file.name.replace(file_extension, ".xlsx")
                 mime_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             buffer.seek(0)
