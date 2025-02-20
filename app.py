@@ -189,17 +189,10 @@ if uploaded_files:
 
             st.success("🎉 All files processed successfully!")
 
-# Add footer with name and favicon
-favicon_path = "favicon.ico"
+# Add footer with name
 footer_html = """
     <div style="position: fixed; bottom: 0; left: 0; right: 0; background-color: #1e1e1e; 
     padding: 0.5rem; margin: 0; width: 100%; text-align: center;">
+    <span style="color: white; font-size: 1.2rem;">Rida Naz</span></div>
 """
-
-if os.path.exists(favicon_path):
-    with open(favicon_path, "rb") as f:
-        favicon_b64 = base64.b64encode(f.read()).decode()
-    footer_html += f'<img src="data:image/x-icon;base64,{favicon_b64}" style="height: 30px; vertical-align: middle; margin-right: 10px;">'
-
-footer_html += '<span style="color: white; font-size: 1.2rem;">Rida Naz</span></div>'
 st.markdown(footer_html, unsafe_allow_html=True)
